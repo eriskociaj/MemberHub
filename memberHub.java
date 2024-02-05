@@ -2,6 +2,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+// Abstrakt klass som representerar en anställd medlem
 abstract class EmployeeMember {
     private static int nextId = 1;
 
@@ -9,24 +10,30 @@ abstract class EmployeeMember {
     protected String name;
     protected String contactInformation;
 
+    // Konstruktor för att skapa en ny anställd medlem
     public EmployeeMember(String name, String contactInformation) {
         this.id = nextId++;
         this.name = name;
         this.contactInformation = contactInformation;
     }
 
+    // Getter-metod för att hämta ID
     public int getId() {
         return id;
     }
 
+    // Getter-metod för att hämta namn
     public String getName() {
         return name;
     }
 
+    // Getter-metod för att hämta kontaktinformation
     public String getContactInformation() {
         return contactInformation;
     }
 
+    // Abstrakta metoder för att visa information, uppdatera detaljer, ta bort anställd medlem,
+    // logga arbetstid och generera rapporter
     public abstract void viewInformation();
 
     public abstract void updateDetails();
@@ -38,26 +45,32 @@ abstract class EmployeeMember {
     public abstract void generateReports();
 }
 
+// Underklass som representerar en anställd
 class Employee extends EmployeeMember {
+    // Konstruktor för att skapa en ny anställd
     public Employee(String name, String contactInformation) {
         super(name, contactInformation);
     }
 
+    // Överskuggad metod för att visa information för en anställd
     @Override
     public void viewInformation() {
         System.out.println("Viewing information for employee with ID " + getId());
     }
 
+    // Överskuggad metod för att uppdatera detaljer för en anställd
     @Override
     public void updateDetails() {
         System.out.println("Updating details for employee with ID " + getId());
     }
 
+    // Överskuggad metod för att ta bort en anställd medlem
     @Override
     public void deleteEmployeeMember(int id) {
         System.out.println("Deleting employee with ID " + id);
     }
 
+    // Överskuggad metod för att logga arbetstid för en anställd
     @Override
     public void logWorkTime(Scanner scanner) {
         System.out.print("Enter work start time: ");
@@ -70,50 +83,61 @@ class Employee extends EmployeeMember {
                 " from " + startTime + " to " + endTime);
     }
 
+    // Överskuggad metod för att generera rapporter för en anställd
     @Override
     public void generateReports() {
         System.out.println("Generating reports for employee with ID " + getId());
     }
 }
 
+// Underklass som representerar en administratör
 class Admin extends EmployeeMember {
+    // Konstruktor för att skapa en ny administratör
     public Admin(String name, String contactInformation) {
         super(name, contactInformation);
     }
 
+    // Överskuggad metod för att visa information för en administratör
     @Override
     public void viewInformation() {
         System.out.println("Viewing information for admin with ID " + getId());
     }
 
+    // Överskuggad metod för att uppdatera detaljer för en administratör
     @Override
     public void updateDetails() {
         System.out.println("Updating details for admin with ID " + getId());
     }
 
+    // Överskuggad metod för att ta bort en anställd medlem
     @Override
     public void deleteEmployeeMember(int id) {
         System.out.println("Deleting employee/member with ID " + id);
     }
 
+    // Överskuggad metod för att generera rapporter för en administratör
     @Override
     public void logWorkTime(Scanner scanner) {
         System.out.println("Admins do not log work time.");
     }
 
+     // Överskuggad metod för att generera rapporter för en administratör
     @Override
     public void generateReports() {
         System.out.println("Generating reports for admin with ID " + getId());
     }
 
+    // Metod för att konfigurera systemparametrar
     public void configureSystemParameters() {
         System.out.println("Configuring system parameters...");
     }
 
+    // Metod för att arkivera inaktiva anställda medlemmar
     public void archiveInactiveEmployeeMember() {
         System.out.println("Archiving inactive employees/members...");
     }
 
+    // Metod för att hantera anställda medlemmar
     public void manageEmployeeMembers(Map<String, EmployeeMember> users) {
         Scanner scanner = new Scanner(System.in);
 
@@ -127,31 +151,37 @@ class Admin extends EmployeeMember {
         deleteEmployeeMember(idToDelete);
     }
 
+    // Metod för att hantera arbetstid
     public void manageWorkTime() {
         System.out.println("Managing work time...");
     }
 
+    // Metod för att hantera löner
     public void manageSalaries() {
         System.out.println("Managing salaries...");
     }
 
+    // Metod för att hantera avdelningar
     public void manageDepartments() {
         System.out.println("Managing departments...");
     }
 
+    // Metod för att generera admin-rapporter
     public void generateAdminReports() {
         System.out.println("Generating admin reports...");
     }
 }
 
+// Klass för autentisering och auktorisering
 class AuthenticationAuthorization {
     private static Map<String, EmployeeMember> users = new HashMap<>();
 
     static {
-        // Add an admin user at the start
+        // Lägg till en administratörsanvändare i början
         users.put("Eris", new Admin("Eris", "eris@email.com"));
     }
 
+     // Metod för att autentisera användare
     public static EmployeeMember authenticate(String username, String password) {
         EmployeeMember user = users.get(username);
 
@@ -166,11 +196,13 @@ class AuthenticationAuthorization {
         }
     }
 
+    // Metod för att auktorisera användare
     public static void authorize(EmployeeMember user) {
-        // Implement authorization logic
+
         System.out.println("Authorization successful");
     }
 
+    // Metod för att hämta användare
     public static Map<String, EmployeeMember> getUsers() {
         return users;
     }
@@ -195,17 +227,17 @@ public class memberHub {
 
             System.out.println("Welcome to the Member Hub, " + currentUser.getName() + "!");
 
-            if (currentUser instanceof Admin) {
-                // Show Admin menu
+             if (currentUser instanceof Admin) {
+                // Visa Admin-menyn
                 displayAdminMenu();
             } else {
-                // Show Employee/Member menu
+                // Visa Anställd/Medlems-menyn
                 displayEmployeeMemberMenu();
             }
 
             System.out.print("Do you want to log in with another account? (1 for yes, 0 for no): ");
             choice = scanner.nextInt();
-            scanner.nextLine();  // Consume the newline character
+            scanner.nextLine();
 
         } while (choice == 1);
 
@@ -213,6 +245,7 @@ public class memberHub {
         scanner.close();
     }
 
+    // Metod för att visa Admin-menyn
     private static void displayAdminMenu() {
         Admin admin = (Admin) currentUser;
 
@@ -232,7 +265,7 @@ public class memberHub {
 
             System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
-            scanner.nextLine();  // Consume the newline character
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
@@ -276,6 +309,7 @@ public class memberHub {
         }
     }
 
+    // Metod för att visa Anställd/Medlems-menyn
     private static void displayEmployeeMemberMenu() {
         while (true) {
             System.out.println("\nEmployee/Member Menu:");
@@ -287,8 +321,7 @@ public class memberHub {
 
             System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
-            scanner.nextLine();  // Consume the newline character
-
+            scanner.nextLine(); 
             switch (choice) {
                 case 1:
                     currentUser.viewInformation();
